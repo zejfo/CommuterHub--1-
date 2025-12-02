@@ -1,0 +1,21 @@
+:root {
+  --brand-navy: #233c68;
+  --brand-gold: #B58500;
+  --nav-inactive: #e5e7eb;
+
+  --text: #111827;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --bg: #f3f4f6;
+  --border: #e5e7eb;
+
+  --radius-phone: 24px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --shadow-phone: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
