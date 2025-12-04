@@ -14,6 +14,8 @@ import { createSlotPicker } from './components/SlotPicker.js';
 import { generateId } from './utils/idGenerator.js';
 import { formatFullDate, formatTime24to12 } from './utils/formatters.js';
 import { clearAll } from './services/storageService.js';
+import { createChatBot } from './components/ChatBot.js';
+
 
 function timeToMinutes(timeStr) {
   const [h, m] = timeStr.split(':').map(Number);
@@ -30,6 +32,13 @@ const phoneRoot = document.getElementById('phone-root');
 // Toasts
 const globalToast = createToastContainer();
 document.body.appendChild(globalToast);
+
+// Chatbot (rule-based assistant)
+const chatBot = createChatBot({
+  store: { getState, setState, subscribe }
+});
+document.body.appendChild(chatBot.root);
+
 
 // Application frame containers
 let headerCmp = null;
