@@ -16,7 +16,6 @@ import { formatFullDate, formatTime24to12 } from './utils/formatters.js';
 import { clearAll } from './services/storageService.js';
 import { createChatBot } from './components/ChatBot.js';
 
-
 function timeToMinutes(timeStr) {
   const [h, m] = timeStr.split(':').map(Number);
   return h * 60 + m;
@@ -25,7 +24,6 @@ function timeToMinutes(timeStr) {
 const LOCKER_RANGE = { start: 100, end: 120 };
 const RACK_RANGE = { start: 1, end: 20 }; // you can change this later
 
-
 // Root
 const phoneRoot = document.getElementById('phone-root');
 
@@ -33,12 +31,19 @@ const phoneRoot = document.getElementById('phone-root');
 const globalToast = createToastContainer();
 document.body.appendChild(globalToast);
 
-// Chatbot (rule-based assistant)
-const chatBot = createChatBot({
-  store: { getState, setState, subscribe }
-});
-document.body.appendChild(chatBot.root);
+// ---- Chatbot (Rammy) ----
+let chatBot = null;
 
+function ensureChatBotAttached() {
+  if (!chatBot) {
+    chatBot = createChatBot({
+      store: { getState, setState, subscribe }
+    });
+  }
+  if (phoneRoot && !phoneRoot.contains(chatBot.root)) {
+    phoneRoot.appendChild(chatBot.root);
+  }
+}
 
 // Application frame containers
 let headerCmp = null;
@@ -591,7 +596,6 @@ function openReservationModal(resource, existingReservation) {
   reservationModal.open();
 }
 
-
 function buildAppShell() {
   phoneRoot.innerHTML = '';
 
@@ -647,6 +651,9 @@ function buildAppShell() {
   });
 
   mainSlot.append(homePage.root, resourcesPage.root, bookingsPage.root);
+
+  // 👇 make sure Rammy is inside the phone
+  ensureChatBotAttached();
 }
 
 function buildWelcomeFlow() {
@@ -681,7 +688,6 @@ function buildWelcomeFlow() {
     }
   });
 
-
   registerPage = createRegisterPage({
     onCancel() {
       setState((prev) => ({
@@ -700,6 +706,9 @@ function buildWelcomeFlow() {
 
   frame.append(welcomePage.root, registerPage.root);
   phoneRoot.appendChild(frame);
+
+  // 👇 keep Rammy attached even on welcome/register
+  ensureChatBotAttached();
 }
 
 function syncHeaderProfile() {
@@ -726,7 +735,6 @@ function syncPages() {
     return;
   }
 
-  // 🔁 REPLACED BLOCK STARTS HERE
   if (page === 'welcome' || page === 'register') {
     if (!welcomePage || !registerPage || homePage || resourcesPage || bookingsPage || headerCmp || navCmp) {
       buildWelcomeFlow();
@@ -743,7 +751,6 @@ function syncPages() {
       registerPage = null;
     }
   }
-  // 🔁 REPLACED BLOCK ENDS HERE
 
   if (welcomePage && registerPage) {
     welcomePage.setVisible(page === 'welcome');
@@ -762,7 +769,6 @@ function syncPages() {
 
   syncHeaderProfile();
 }
-
 
 function handleToastChanges(prev, next) {
   if (!prev.ui || !next.ui) return;

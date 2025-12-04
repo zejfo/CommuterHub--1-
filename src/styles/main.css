@@ -38,6 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 
@@ -553,12 +554,13 @@ h2.section-title {
 /* ---- Chatbot ---- */
 
 .chatbot-root {
-  position: fixed;
-  bottom: 80px;
-  right: 24px;
-  z-index: 999;
+  position: absolute;       /* inside the phone, not the whole window */
+  top: 79px;                /* 👈 adjust if needed to sit just under header */
+  right: 12px;
+  z-index: 40;              /* still above content, below modals if you like */
   font-family: inherit;
 }
+
 
 /* round toggle button */
 .chatbot-toggle {
