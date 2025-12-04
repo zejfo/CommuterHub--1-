@@ -707,8 +707,6 @@ function buildWelcomeFlow() {
   frame.append(welcomePage.root, registerPage.root);
   phoneRoot.appendChild(frame);
 
-  // 👇 keep Rammy attached even on welcome/register
-  ensureChatBotAttached();
 }
 
 function syncHeaderProfile() {
